@@ -6,7 +6,6 @@ import (
 	"database/sql/driver"
 	"errors"
 	"github.com/jmoiron/sqlx"
-	"os"
 )
 
 type txKey struct{}
@@ -37,7 +36,7 @@ type transactor struct {
 
 func New(db *sqlx.DB, log Logger) (Transactor, Factory) {
 	if log == nil {
-		log = logger{os.Stderr}
+		log = stdErrLogger()
 	}
 
 	trx := &transactor{

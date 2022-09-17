@@ -21,7 +21,7 @@ func TestTransactor_Commit(t *testing.T) {
 
 	buf := &bytes.Buffer{}
 	DBx := sqlx.NewDb(db, "sqlmock")
-	trx, f := New(DBx, logger{buf})
+	trx, f := New(DBx, &logger{dest: buf})
 	ctx := context.Background()
 
 	ctx, err = trx.Begin(ctx)
@@ -55,7 +55,7 @@ func TestTransactor_Rollback(t *testing.T) {
 
 	buf := &bytes.Buffer{}
 	DBx := sqlx.NewDb(db, "sqlmock")
-	trx, f := New(DBx, logger{buf})
+	trx, f := New(DBx, &logger{dest: buf})
 
 	ctx, err := trx.Begin(context.Background())
 	if err != nil {
@@ -89,7 +89,7 @@ func TestTransactor_Begin(t *testing.T) {
 
 	buf := &bytes.Buffer{}
 	DBx := sqlx.NewDb(db, "sqlmock")
-	trx, _ := New(DBx, logger{buf})
+	trx, _ := New(DBx, &logger{dest: buf})
 
 	_, begErr := trx.Begin(context.Background())
 
